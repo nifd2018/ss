@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>问答式计算器系统</title>
+    <title>多功能系统</title>
     <style>
         * {
             box-sizing: border-box;
@@ -23,7 +23,7 @@
         
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 800px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
@@ -91,20 +91,12 @@
             transform: translateY(1px);
         }
         
-        .calculator {
+        .calculator, .maze-game {
             display: none;
             padding: 20px;
         }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9rem;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        /* 从文档2中复制的计算器样式 */
+
+        /* 计算器样式 */
         .calc-container {
             width: 100%;
             background-color: #1e1e1e;
@@ -174,6 +166,152 @@
             background-color: #ffaa33;
         }
         
+        /* 迷宫游戏样式 */
+        .maze-container {
+            position: relative;
+            display: inline-block;
+            background: rgba(20, 20, 35, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 0 auto;
+        }
+        
+        canvas {
+            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #12122e;
+            margin: 0 auto;
+        }
+        
+        .game-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(50, 50, 70, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(25, 25, 35, 0.8);
+            border-radius: 8px;
+            padding: 10px 20px;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card h3 {
+            color: #a9a9b3;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #6ab7ff;
+            margin-bottom: 0;
+        }
+        
+        .game-btn {
+            background: linear-gradient(to right, #4568dc, #b06ab3);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            background: rgba(40, 40, 60, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            line-height: 1.6;
+            border-left: 4px solid #b06ab3;
+            color: #f0f0f0;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #a9a9b3;
+        }
+        
+        .instructions p {
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .keys {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .key {
+            background: rgba(30, 30, 50, 0.9);
+            border-radius: 6px;
+            padding: 10px 15px;
+            min-width: 60px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #6ab7ff;
+        }
+        
+        .difficulty {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .diff-btn {
+            flex: 1;
+            max-width: 120px;
+            padding: 10px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .diff-btn.active {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(180, 70, 180, 0.5);
+        }
+        
+        .back-btn {
+            background: linear-gradient(to right, #6c757d, #495057);
+            margin-right: 10px;
+        }
+        
         @media (max-width: 500px) {
             .btn-group {
                 flex-direction: column;
@@ -196,6 +334,42 @@
                 height: 60px;
                 font-size: 1.3rem;
             }
+            
+            .game-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stats {
+                width: 100%;
+                justify-content: space-between;
+                gap: 5px;
+            }
+            
+            .stat-card {
+                min-width: 100px;
+                padding: 8px 15px;
+            }
+            
+            .stat-card p {
+                font-size: 1.4rem;
+            }
+            
+            .diff-btn {
+                max-width: 100px;
+            }
+            
+            .game-btn {
+                padding: 10px 15px;
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef;
         }
     </style>
 </head>
@@ -203,15 +377,15 @@
     <div class="container">
         <!-- 初始问题界面 -->
         <div class="screen" id="questionScreen">
-            <h1>欢迎使用计算器系统</h1>
-            <p>本系统提供基础计算功能，您是否要继续使用？</p>
+            <h1>欢迎使用本系统</h1>
+            <p>本系统提供多种功能，请您选择</p>
             <div class="btn-group">
-                <button id="btnA">A. 继续使用</button>
-                <button id="btnB">B. 退出系统</button>
+                <button id="btnA">A. 简易计算器</button>
+                <button id="btnB">B. 迷宫小游戏</button>
             </div>
         </div>
         
-        <!-- 计算器界面 - 使用文档2的界面 -->
+        <!-- 计算器界面 -->
         <div class="calculator" id="calculator">
             <div class="calc-container">
                 <div class="display">
@@ -239,34 +413,105 @@
                     <button class="calc-btn span-two" data-operation="=">=</button>
                 </div>
             </div>
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="back-btn" onclick="backToMain()">返回主界面</button>
+            </div>
+        </div>
+        
+        <!-- 迷宫游戏界面 -->
+        <div class="maze-game" id="mazeGame">
+            <div class="game-controls">
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>移动步数</h3>
+                        <p id="move-count">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>游戏时间</h3>
+                        <p id="timer">00:00</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <button class="game-btn back-btn" onclick="backToMain()">返回</button>
+                    <button class="game-btn" id="new-game">新游戏</button>
+                </div>
+            </div>
+            
+            <div class="maze-container">
+                <canvas id="maze"></canvas>
+            </div>
+            
+            <div class="difficulty">
+                <button class="diff-btn game-btn active" data-diff="easy">简单</button>
+                <button class="diff-btn game-btn" data-diff="medium">中等</button>
+                <button class="diff-btn game-btn" data-diff="hard">困难</button>
+            </div>
+            
+            <div class="instructions">
+                <h3>游戏说明</h3>
+                <p>使用方向键或WASD键移动蓝色玩家。<br>
+                避开红色墙壁，找到绿色出口。走出迷宫即可获胜！</p>
+                
+                <div class="keys">
+                    <div class="key">↑</div>
+                    <div class="key">←</div>
+                    <div class="key">↓</div>
+                    <div class="key">→</div>
+                    <div class="key">W</div>
+                    <div class="key">A</div>
+                    <div class="key">S</div>
+                    <div class="key">D</div>
+                </div>
+            </div>
         </div>
         
         <div class="footer">
-            <p>问答式计算器系统 | 2025</p>
+            <p>欢迎使用本系统 | 2025</p>
         </div>
     </div>
 
     <script>
+        // === 全局变量 ===
+        let currentMazeGame = null;
+        
         // === 初始界面控制逻辑 ===
         const questionScreen = document.getElementById('questionScreen');
         const calculator = document.getElementById('calculator');
+        const mazeGame = document.getElementById('mazeGame');
         
         document.getElementById('btnA').addEventListener('click', showCalculator);
-        document.getElementById('btnB').addEventListener('click', exitSystem);
+        document.getElementById('btnB').addEventListener('click', showMazeGame);
         
         function showCalculator() {
             questionScreen.style.display = 'none';
             calculator.style.display = 'block';
+            mazeGame.style.display = 'none';
         }
         
-        function exitSystem() {
-            questionScreen.innerHTML = `
-                <h1>感谢使用</h1>
-                <p>您已成功退出计算器系统</p>
-                <div class="btn-group">
-                    <button onclick="window.location.reload()">重新开始</button>
-                </div>
-            `;
+        function showMazeGame() {
+            questionScreen.style.display = 'none';
+            calculator.style.display = 'none';
+            mazeGame.style.display = 'block';
+            
+            // 初始化迷宫游戏
+            if (!currentMazeGame) {
+                currentMazeGame = new MazeGame();
+            } else {
+                currentMazeGame.startGame();
+            }
+        }
+        
+        function backToMain() {
+            questionScreen.style.display = 'block';
+            calculator.style.display = 'none';
+            mazeGame.style.display = 'none';
+            
+            // 停止迷宫游戏的计时器
+            if (currentMazeGame && currentMazeGame.timerInterval) {
+                clearInterval(currentMazeGame.timerInterval);
+                currentMazeGame.gameActive = false;
+            }
         }
         
         // === 计算器功能实现 ===
@@ -387,6 +632,296 @@
         document.getElementById('delete').addEventListener('click', () => {
             calc.delete();
             calc.updateDisplay();
+        });
+        
+        // === 迷宫游戏功能实现 ===
+        class MazeGame {
+            constructor() {
+                this.canvas = document.getElementById('maze');
+                this.ctx = this.canvas.getContext('2d');
+                this.cellSize = 30;
+                this.rows = 15;
+                this.cols = 15;
+                this.maze = [];
+                this.player = { x: 1, y: 1 };
+                this.exit = { x: this.cols - 2, y: this.rows - 2 };
+                this.moveCount = 0;
+                this.seconds = 0;
+                this.timerInterval = null;
+                this.gameActive = false;
+                this.difficulty = 'medium';
+                
+                // 绑定事件
+                document.getElementById('new-game').addEventListener('click', () => this.startGame());
+                
+                document.querySelectorAll('.diff-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.difficulty = btn.dataset.diff;
+                        this.startGame();
+                    });
+                });
+                
+                window.addEventListener('keydown', (e) => this.handleKeyPress(e));
+                this.initCanvasSize();
+                this.startGame();
+            }
+            
+            initCanvasSize() {
+                const maxWidth = Math.min(window.innerWidth * 0.9, 500);
+                this.canvas.width = maxWidth - 30;
+                this.canvas.height = this.canvas.width;
+                this.cellSize = Math.floor(this.canvas.width / this.cols);
+                this.canvas.width = this.cellSize * this.cols;
+                this.canvas.height = this.cellSize * this.rows;
+            }
+            
+            startGame() {
+                // 重置游戏状态
+                this.gameActive = true;
+                this.moveCount = 0;
+                this.seconds = 0;
+                document.getElementById('move-count').textContent = '0';
+                document.getElementById('timer').textContent = '00:00';
+                
+                // 清除定时器
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                this.timerInterval = setInterval(() => {
+                    if (this.gameActive) {
+                        this.seconds++;
+                        const minutes = Math.floor(this.seconds / 60);
+                        const secs = this.seconds % 60;
+                        document.getElementById('timer').textContent = 
+                            `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    }
+                }, 1000);
+                
+                // 设置难度
+                if (this.difficulty === 'easy') {
+                    this.rows = 13;
+                    this.cols = 13;
+                } else if (this.difficulty === 'medium') {
+                    this.rows = 15;
+                    this.cols = 15;
+                } else {
+                    this.rows = 17;
+                    this.cols = 17;
+                }
+                
+                // 初始化画布大小
+                this.initCanvasSize();
+                this.player = { x: 1, y: 1 };
+                this.exit = { x: this.cols - 2, y: this.rows - 2 };
+                
+                // 生成迷宫
+                this.generateMaze();
+                this.drawMaze();
+            }
+            
+            generateMaze() {
+                // 初始化迷宫 - 全部为墙
+                this.maze = Array(this.rows).fill().map(() => Array(this.cols).fill(1));
+                
+                // 创建随机路径
+                this.createPaths(1, 1);
+                
+                // 确保起点和终点是路
+                this.maze[1][1] = 0; // 起点
+                this.maze[this.rows-2][this.cols-2] = 0; // 终点
+                
+                // 添加一些随机路径使迷宫更有趣
+                this.addRandomPaths();
+            }
+            
+            createPaths(x, y) {
+                // 深度优先算法生成迷宫
+                const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+                
+                // 随机排序方向
+                directions.sort(() => Math.random() - 0.5);
+                
+                this.maze[y][x] = 0;
+                
+                for (let i = 0; i < directions.length; i++) {
+                    const [dx, dy] = directions[i];
+                    const newX = x + dx * 2;
+                    const newY = y + dy * 2;
+                    
+                    if (newX > 0 && newX < this.cols-1 && newY > 0 && newY < this.rows-1 && this.maze[newY][newX] === 1) {
+                        this.maze[y + dy][x + dx] = 0;
+                        this.createPaths(newX, newY);
+                    }
+                }
+            }
+            
+            addRandomPaths() {
+                // 在迷宫中添加额外的路径
+                const extraPaths = Math.floor((this.rows * this.cols) * 0.05); // 5%的额外路径
+                
+                for (let i = 0; i < extraPaths; i++) {
+                    const x = Math.floor(Math.random() * (this.cols - 2)) + 1;
+                    const y = Math.floor(Math.random() * (this.rows - 2)) + 1;
+                    
+                    if (this.maze[y][x] === 1 && 
+                        !(x === 1 && y === 1) && 
+                        !(x === this.cols-2 && y === this.rows-2)) {
+                        this.maze[y][x] = 0;
+                    }
+                }
+            }
+            
+            drawMaze() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // 绘制迷宫
+                for (let y = 0; y < this.rows; y++) {
+                    for (let x = 0; x < this.cols; x++) {
+                        const cell = this.maze[y][x];
+                        
+                        if (cell === 1) {
+                            // 墙壁
+                            this.ctx.fillStyle = '#ff4757';
+                            this.ctx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+                            
+                            // 添加3D效果
+                            this.ctx.fillStyle = '#d63031';
+                            this.ctx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize - 1, 4);
+                            this.ctx.fillRect(x * this.cellSize, y * this.cellSize, 4, this.cellSize - 1);
+                        } else {
+                            // 路径
+                            this.ctx.fillStyle = '#1e2a3a';
+                            this.ctx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+                        }
+                    }
+                }
+                
+                // 绘制出口
+                this.ctx.fillStyle = '#2ed573';
+                this.ctx.beginPath();
+                const exitX = this.exit.x * this.cellSize + this.cellSize/2;
+                const exitY = this.exit.y * this.cellSize + this.cellSize/2;
+                this.ctx.arc(exitX, exitY, this.cellSize/2.5, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // 绘制玩家
+                const playerX = this.player.x * this.cellSize + this.cellSize/2;
+                const playerY = this.player.y * this.cellSize + this.cellSize/2;
+                
+                // 玩家阴影
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                this.ctx.beginPath();
+                this.ctx.arc(playerX + 3, playerY + 3, this.cellSize/3, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // 玩家主体
+                this.ctx.fillStyle = '#1e90ff';
+                this.ctx.beginPath();
+                this.ctx.arc(playerX, playerY, this.cellSize/3, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // 眼睛
+                this.ctx.fillStyle = 'white';
+                this.ctx.beginPath();
+                this.ctx.arc(playerX - this.cellSize/10, playerY - this.cellSize/10, this.cellSize/10, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                this.ctx.beginPath();
+                this.ctx.arc(playerX + this.cellSize/10, playerY - this.cellSize/10, this.cellSize/10, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // 瞳孔
+                this.ctx.fillStyle = '#2c3e50';
+                this.ctx.beginPath();
+                this.ctx.arc(playerX - this.cellSize/10, playerY - this.cellSize/10, this.cellSize/20, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                this.ctx.beginPath();
+                this.ctx.arc(playerX + this.cellSize/10, playerY - this.cellSize/10, this.cellSize/20, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+            
+            handleKeyPress(e) {
+                if (!this.gameActive) return;
+                
+                let moved = false;
+                let newX = this.player.x;
+                let newY = this.player.y;
+                
+                // 处理方向键和WASD键
+                if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+                    newY--;
+                } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+                    newY++;
+                } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                    newX--;
+                } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                    newX++;
+                } else {
+                    return;
+                }
+                
+                // 检查是否可以移动
+                if (newX >= 0 && newX < this.cols && newY >= 0 && newY < this.rows && this.maze[newY][newX] === 0) {
+                    this.player.x = newX;
+                    this.player.y = newY;
+                    moved = true;
+                    this.moveCount++;
+                    document.getElementById('move-count').textContent = this.moveCount;
+                    
+                    // 检查是否到达出口
+                    if (this.player.x === this.exit.x && this.player.y === this.exit.y) {
+                        this.gameActive = false;
+                        clearInterval(this.timerInterval);
+                        
+                        // 添加胜利动画
+                        this.addConfetti();
+                        
+                        setTimeout(() => {
+                            alert(`恭喜！您已在${this.seconds}秒内成功走出迷宫!\n使用步数: ${this.moveCount}`);
+                        }, 500);
+                    }
+                }
+                
+                if (moved) {
+                    this.drawMaze();
+                }
+            }
+            
+            addConfetti() {
+                // 创建简单的胜利动画
+                const colors = ['#ff6b6b', '#4ecdc4', '#ffd166', '#6a0572', '#a6d0e4'];
+                const container = document.querySelector('.maze-container');
+                
+                for (let i = 0; i < 80; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.width = '8px';
+                    confetti.style.height = '8px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = '0';
+                    confetti.style.opacity = '0.9';
+                    container.appendChild(confetti);
+                    
+                    // 添加动画
+                    const animation = confetti.animate([
+                        { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                        { transform: `translateY(${container.clientHeight}px) rotate(${360 * Math.random()}deg)`, opacity: 0 }
+                    ], {
+                        duration: 1000 + Math.random() * 2000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.1, 1)'
+                    });
+                    
+                    animation.onfinish = () => container.removeChild(confetti);
+                }
+            }
+        }
+
+        // 初始化迷宫游戏（当选择迷宫游戏时）
+        window.addEventListener('load', () => {
+            // 不在这里初始化游戏，等到用户选择迷宫游戏时再初始化
         });
     </script>
 </body>
